@@ -4,13 +4,21 @@ interface Props {
   text: string
   speed?: number
   onComplete?: () => void
+  skip?: boolean
 }
 
-export default function TypeWriter({ text, speed = 30, onComplete }: Props) {
+export default function TypeWriter({ text, speed = 30, onComplete, skip = false }: Props) {
   const [displayed, setDisplayed] = useState('')
   const [done, setDone] = useState(false)
 
   useEffect(() => {
+    if (skip) {
+      setDisplayed(text)
+      setDone(true)
+      onComplete?.()
+      return
+    }
+
     setDisplayed('')
     setDone(false)
     let i = 0
@@ -24,18 +32,10 @@ export default function TypeWriter({ text, speed = 30, onComplete }: Props) {
       }
     }, speed)
     return () => clearInterval(timer)
-  }, [text, speed, onComplete])
-
-  const handleClick = () => {
-    if (!done) {
-      setDisplayed(text)
-      setDone(true)
-      onComplete?.()
-    }
-  }
+  }, [text, speed, onComplete, skip])
 
   return (
-    <div className="typewriter" onClick={handleClick} style={{ cursor: done ? 'default' : 'pointer' }}>
+    <div className="typewriter">
       {displayed.split('\n').map((line, i) => (
         <p key={i}>{line || '\u00A0'}</p>
       ))}

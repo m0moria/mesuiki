@@ -33,10 +33,10 @@ function randRange(min: number, max: number): number {
 }
 
 export function getPhase(turn: number): GamePhase {
-  if (turn <= 10) return 'early'
-  if (turn <= 25) return 'mid'
-  if (turn <= 37) return 'late'
-  return 'final'
+  if (turn <= 12) return 'spring'
+  if (turn <= 24) return 'summer'
+  if (turn <= 36) return 'fall'
+  return 'winter'
 }
 
 function loadSave(): Partial<GameState> | null {
@@ -99,7 +99,7 @@ interface GameActions {
 const initialState: GameState = {
   scene: GameScene.Title,
   turn: 0,
-  maxTurns: 40,
+  maxTurns: 48,
   stats: { ...ZERO_STATS },
   condition: { stamina: 100, mental: 100 },
   heroine: null,
@@ -377,8 +377,8 @@ function checkForSupportStory(state: GameState): GameEvent | null {
   return {
     id: `support-story-${card.id}-step-${step}`,
     title: `[${card.characterName}] ${story.title}`,
-    text: story.text,
-    trigger: { type: 'turn', turn: state.turn },
+    script: story.script,
+    trigger: { type: 'turn' as const, turn: state.turn },
     choices: story.choices,
   }
 }

@@ -27,7 +27,8 @@ export interface Condition {
 
 export type ConditionKey = keyof Condition
 
-export type GamePhase = 'early' | 'mid' | 'late' | 'final'
+/** 4계절 페이즈 (plan_scenario.md 기반) */
+export type GamePhase = 'spring' | 'summer' | 'fall' | 'winter'
 
 export interface Heroine {
   id: string
@@ -65,21 +66,30 @@ export interface TrainingOption {
   failText?: string
 }
 
+/** VN 대사 라인 타입 */
+export type DialogueType = 'dialogue' | 'narration' | 'thought' | 'action'
+
+export interface DialogueLine {
+  speaker?: string   // 화자 이름 (narration/action은 생략)
+  text: string
+  type: DialogueType
+}
+
 export interface EventChoice {
   text: string
   statEffects: Partial<Stats>
   conditionEffects: Partial<Condition>
-  followUpText: string
+  followUpScript: DialogueLine[]  // VN 스크립트
 }
 
 export interface GameEvent {
   id: string
   title: string
-  text: string
+  script: DialogueLine[]  // VN 스크립트
   trigger: EventTrigger
   choices: EventChoice[]
   phase?: GamePhase
-  heroineId?: string  // 특정 히로인 전용 이벤트
+  heroineId?: string
 }
 
 export type EventTrigger =
@@ -92,14 +102,14 @@ export type EndingRank = 'S' | 'A' | 'B' | 'C' | 'D'
 export interface Ending {
   rank: EndingRank
   title: string
-  description: string
+  script: DialogueLine[]  // VN 스크립트
   condition: (stats: Stats, condition: Condition) => boolean
 }
 
 /** 서포트 카드 */
 export interface SupportCardStoryStep {
   title: string
-  text: string
+  script: DialogueLine[]  // VN 스크립트
   choices: EventChoice[]
 }
 
@@ -111,13 +121,10 @@ export interface SupportCard {
   rarity: 'SSR'
   portrait: string
   flavorText: string
-  // 게임플레이 이점
   trainingBonus: { stat: StatKey; percent: number }[]
   skillName: string
   skillDesc: string
-  // 3단계 스토리
   story: [SupportCardStoryStep, SupportCardStoryStep, SupportCardStoryStep]
-  // 최종 보상
   finalBonusStat: StatKey
   finalBonusPercent: number
 }
@@ -130,7 +137,7 @@ export interface GameState {
   condition: Condition
   heroine: Heroine | null
   supportCards: SupportCard[]
-  supportStoryProgress: Record<string, number>  // cardId -> step completed (0,1,2,3)
+  supportStoryProgress: Record<string, number>
   currentEvent: GameEvent | null
   triggeredEventIds: string[]
   log: string[]

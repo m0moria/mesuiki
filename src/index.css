@@ -539,6 +539,11 @@ body {
   position: relative;
 }
 
+.typewriter p {
+  margin-bottom: 0.3rem;
+  line-height: 1.8;
+}
+
 .typewriter-cursor {
   animation: blink 0.8s infinite;
   color: var(--accent);
@@ -548,6 +553,86 @@ body {
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* ===== VN Textbox ===== */
+.vn-textbox {
+  width: 100%;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  min-height: 140px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  position: relative;
+}
+
+.vn-textbox:hover {
+  border-color: var(--border-hover);
+}
+
+.vn-speaker {
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid rgba(212, 168, 67, 0.2);
+  letter-spacing: 0.1em;
+}
+
+.vn-text {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--text);
+}
+
+.vn-narration .vn-text {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.vn-thought .vn-text {
+  color: #7eb3d8;
+  font-style: italic;
+}
+
+.vn-thought .vn-text::before {
+  content: '(';
+}
+
+.vn-thought .vn-text::after {
+  content: ')';
+}
+
+.vn-action .vn-text {
+  color: #b8a0d0;
+}
+
+.vn-next-indicator {
+  position: absolute;
+  bottom: 12px;
+  right: 18px;
+  color: var(--accent);
+  font-size: 0.8rem;
+  animation: vnBounce 1s infinite;
+}
+
+@keyframes vnBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+.vn-choice-area {
+  width: 100%;
+}
+
+.vn-progress {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  margin-top: 0.5rem;
 }
 
 /* ===== Choice Panel ===== */

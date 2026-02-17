@@ -7,10 +7,10 @@ import ConditionGauge from './ui/ConditionGauge'
 import TurnCounter from './ui/TurnCounter'
 
 const PHASE_LABELS: Record<string, string> = {
-  early: '초반 — 기초 조교',
-  mid: '중반 — 타락의 시작',
-  late: '후반 — 메스화 완성',
-  final: '최종 — 그랑프리',
+  spring: '봄 — 싹트는 욕망',
+  summer: '여름 — 뜨거운 일탈',
+  fall: '가을 — 깊어지는 타락',
+  winter: '겨울 — 완성형 암컷',
 }
 
 export default function TrainingMain() {
