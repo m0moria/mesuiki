@@ -3,10 +3,27 @@ export const STAT_MAX = 1250
 export enum GameScene {
   Title = 'title',
   HeroineSelect = 'heroineSelect',
+  InheritanceSelect = 'inheritanceSelect',
   SupportSelect = 'supportSelect',
   Training = 'training',
   Event = 'event',
   Result = 'result',
+  Battle = 'battle',
+}
+
+export type TrainingResult = 'excellent' | 'success' | 'fail' | 'catastrophe'
+export type ConditionStatus = 'inHeat' | 'normal' | 'frigid' | 'trainPhobia'
+
+export interface StellaArchive {
+  id: string
+  heroineId: string
+  heroineName: string
+  rank: EndingRank
+  stats: Stats
+  bonusStat: StatKey
+  bonusPercent: number
+  skillName: string
+  createdAt: number
 }
 
 /** 5대 능력치 (0-1250) */
@@ -97,13 +114,15 @@ export type EventTrigger =
   | { type: 'stat'; stat: StatKey; threshold: number; direction: 'above' | 'below' }
   | { type: 'phase'; phase: GamePhase }
 
-export type EndingRank = 'S' | 'A' | 'B' | 'C' | 'D'
+export type EndingRank = 'SS' | 'S' | 'A+' | 'A' | 'B+' | 'B' | 'C' | 'D'
+
+export type FanRank = 'underground' | 'rising' | 'national' | 'worldclass'
 
 export interface Ending {
   rank: EndingRank
   title: string
   script: DialogueLine[]  // VN 스크립트
-  condition: (stats: Stats, condition: Condition) => boolean
+  condition: (stats: Stats, condition: Condition, usedInheritance?: boolean, fanCount?: number) => boolean
 }
 
 /** 서포트 카드 */
@@ -129,16 +148,85 @@ export interface SupportCard {
   finalBonusPercent: number
 }
 
+/** 배틀 액션 카드 */
+export interface BattleActionCard {
+  id: string
+  name: string
+  emoji: string
+  description: string
+  pleasureEffect: number   // 쾌감 게이지 증감 (음수 = 상대 쾌감 올림)
+  satisfactionEffect: number  // 만족도 게이지 증감
+  statBonus?: StatKey  // 이 스탯이 높으면 효과 증폭
+}
+
+/** 배틀 턴 로그 */
+export interface BattleTurnLog {
+  turn: number
+  narration: string
+  pleasureDelta: number
+  satisfactionDelta: number
+  isPlayerAction: boolean
+}
+
+/** 배틀 상태 */
+export interface BattleState {
+  rivalName: string
+  rivalTitle: string
+  rivalPower: number
+  season: 'spring' | 'summer' | 'fall'
+  isFreeMatch: boolean
+  fanReward: number
+  battleTurn: number
+  maxBattleTurns: number
+  pleasure: number       // 0→100 패배 게이지
+  satisfaction: number   // 0→100 승리 게이지
+  phase: 'intro' | 'narration' | 'choice' | 'result'
+  turnLogs: BattleTurnLog[]
+  drawnCards: BattleActionCard[]
+  introScript: DialogueLine[]
+  introIndex: number
+  resultType: 'win' | 'lose' | 'draw' | null
+}
+
+export interface LastTrainingResult {
+  result: TrainingResult
+  statChanges: Partial<Stats>
+  conditionChanges: Partial<Condition>
+  trainingName: string
+  trainingId: string
+  friendshipBonus?: boolean
+  bondChanges?: Record<string, number>
+  successText?: string
+  failText?: string
+}
+
 export interface GameState {
   scene: GameScene
   turn: number
   maxTurns: number
   stats: Stats
   condition: Condition
+  lust: number
+  conditionStatus: ConditionStatus
+  trainPhobiaTurns: number
   heroine: Heroine | null
   supportCards: SupportCard[]
   supportStoryProgress: Record<string, number>
   currentEvent: GameEvent | null
   triggeredEventIds: string[]
   log: string[]
+  lastTrainingResult: LastTrainingResult | null
+  showTrainingResult: boolean
+  inheritanceArchives: StellaArchive[]
+  usedInheritance: boolean
+  bondGauges: Record<string, number>
+  supportCardPlacements: Record<string, StatKey>
+  fanCount: number
+  battleState: BattleState | null
+  lustEventPending: boolean
+  skillPoints: number
+  skillHints: Record<string, number>
+  learnedSkills: string[]
+  equippedSkills: string[]
+  showSkillShop: boolean
 }

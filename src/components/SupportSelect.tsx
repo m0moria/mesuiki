@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useGameStore } from '../stores/gameStore'
 import { supportCards } from '../data/supportCards'
 import { SupportCard } from '../types/game'
+import { supportPortrait } from '../data/images'
 
 const MAX_SUPPORT = 3
 
@@ -39,7 +40,11 @@ export default function SupportSelect() {
               onClick={() => toggleCard(card.id)}
             >
               <div className="support-card-header">
-                <span className="support-card-portrait">{card.portrait}</span>
+                {supportPortrait[card.id] ? (
+                  <img src={supportPortrait[card.id]!} alt={card.characterName} className="support-card-portrait-img" />
+                ) : (
+                  <span className="support-card-portrait">{card.portrait}</span>
+                )}
                 <span className="support-card-rarity">{card.rarity}</span>
               </div>
               <h3 className="support-card-name">{card.characterName}</h3>

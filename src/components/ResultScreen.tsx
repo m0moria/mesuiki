@@ -5,7 +5,7 @@ import StatRadar from './ui/StatRadar'
 import TypeWriter from './ui/TypeWriter'
 
 export default function ResultScreen() {
-  const { stats, condition, heroine, getEnding, resetGame } = useGameStore()
+  const { stats, condition, heroine, getEnding, resetGame, fanCount } = useGameStore()
   const ending = getEnding()
   const [lineIndex, setLineIndex] = useState(0)
   const [isTyping, setIsTyping] = useState(true)
@@ -82,6 +82,12 @@ export default function ResultScreen() {
                   <div>체력: {condition.stamina}</div>
                   <div>정신력: {condition.mental}</div>
                   <div className="result-total">총합: {totalScore}</div>
+                  {fanCount > 0 && (
+                    <>
+                      <div className="result-divider" />
+                      <div>📺 팬: {fanCount.toLocaleString()}</div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

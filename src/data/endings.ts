@@ -1,11 +1,43 @@
 import { Ending } from '../types/game'
 
 export const endings: Ending[] = [
+  // ── SS Rank (Hidden) ──────────────────────────────────────
+  {
+    rank: 'SS',
+    title: '궁극 조교 — 전설의 암컷, 인자의 완성',
+    condition: (stats, _cond, usedInheritance, fanCount) =>
+      usedInheritance === true &&
+      (fanCount ?? 0) >= 50000 &&
+      stats.libido >= 900 &&
+      stats.technique >= 900 &&
+      stats.capacity >= 900 &&
+      stats.endurance >= 900 &&
+      stats.charm >= 900,
+    script: [
+      { text: '메스 그랑프리 결승. 하지만 오늘은 단순한 결승전이 아니다 — 「전설의 암컷」을 결정하는 역대 최초의 무제한전.', type: 'narration' },
+      { speaker: '키리시마 레이카', text: '전 스탯 900 초과… 인자 계승까지 완벽하게 활용했어. 이건… 역사상 전례가 없어.', type: 'dialogue' },
+      { text: '스타디움을 가득 메운 10만 관중이 숨을 죽인다. 녀석은 눈에 하트를 띄운 채 무대 중앙에 섰다.', type: 'narration' },
+      { speaker: '히로인', text: '트레이너님… 저를 만들어준 건 당신이에요. 선대의 인자까지… 전부 제 안에서 꽃피웠어요♡', type: 'dialogue' },
+      { speaker: '트레이너', text: '보여줘. 네가 — 역사상 최강의 암컷이라는 걸.', type: 'dialogue' },
+      { text: '첫 삽입과 동시에 보지가 자지를 12단계로 조여들며 빨아들였다. 명기의 극치 — 관객석에서 비명이 터졌다.', type: 'action' },
+      { speaker: '히로인', text: '아아앗♡♡♡ 자궁이… 뇌가… 전부 트레이너님 자지로 가득… 최고예요… ♡♡♡♡♡', type: 'dialogue' },
+      { text: '20라운드. 30라운드. 녀석의 몸은 한계를 모르고, 절정할 때마다 더 강해졌다. 인자 계승이 만든 초월적 내구력.', type: 'narration' },
+      { speaker: '트레이너', text: '마지막이다 — 자궁 깊숙이, 전부 쏟아줄게.', type: 'dialogue' },
+      { text: '뷰루뷰루뷰루♡♡♡ 자궁을 정액이 범람하고, 배가 볼록하게 부풀었다. 녀석은 환희의 아헤가오로 눈을 뒤집었다.', type: 'action' },
+      { speaker: '히로인', text: '이ㅎ히히히… ♡ 행복해… 트레이너님 정액으로 자궁이 가득… 저는 역사상 최강의 암컷… 트레이너님만의 거… ♡♡♡♡♡', type: 'dialogue' },
+      { speaker: '키리시마 레이카', text: '…전설이야. SS랭크, 아니 — 그 위의 영역이야. 「궁극의 암컷」… 인자의 완성을 목격했어.', type: 'dialogue' },
+      { text: '10만 관중의 함성. 꽃비가 내리는 무대 위에서 녀석은 정액범벅인 채로 나에게 안겼다. 배 안에서 새 생명이 싹트고 있었다.', type: 'narration' },
+      { text: '선대의 유산, 인자의 완성, 그리고 궁극의 조교 — 모든 것이 하나로 수렴한 순간.', type: 'narration' },
+      { text: '【 SS랭크 히든 엔딩 — 궁극 조교 달성 】', type: 'narration' },
+    ],
+  },
+
   // ── S Rank ──────────────────────────────────────────────
   {
     rank: 'S',
     title: '완전 조교 — S랭크 암컷 인증',
-    condition: (stats) =>
+    condition: (stats, _cond, _usedInheritance, fanCount) =>
+      (fanCount ?? 0) >= 10000 &&
       stats.libido >= 750 &&
       stats.technique >= 750 &&
       stats.capacity >= 600 &&
@@ -27,6 +59,27 @@ export const endings: Ending[] = [
     ],
   },
 
+  // ── A+ Rank (팬 수 특화) ──────────────────────────────────
+  {
+    rank: 'A+' as const,
+    title: '전국 공개 종부쇼 — 팬 30000명 기념 생방송',
+    condition: (_stats, _cond, _usedInheritance, fanCount) =>
+      (fanCount ?? 0) >= 30000 &&
+      (_stats.libido >= 500 || _stats.charm >= 500),
+    script: [
+      { text: '팬 30,000명 돌파 기념 — 전국 생방송 종부쇼가 시작된다.', type: 'narration' as const },
+      { text: '스타디움 대형 스크린에 히로인의 전신이 비춰진다. 동시 접속자 수가 폭발적으로 치솟는다.', type: 'narration' as const },
+      { speaker: '트레이너', text: '전국이 보고 있어. 최고의 쇼를 보여줘.', type: 'dialogue' as const },
+      { speaker: '히로인', text: '네… ♡ 모두에게 보여줄게요. 트레이너님의 자지가… 얼마나 대단한지… ♡♡', type: 'dialogue' as const },
+      { text: '삽입과 동시에 화면이 흔들린다. 슈퍼챗이 화면을 뒤덮기 시작했다.', type: 'action' as const },
+      { speaker: '히로인', text: '아아앗♡♡ 전국에서 보고 있는데… 자궁이 벌어져… 임신해버려요… ♡♡♡', type: 'dialogue' as const },
+      { text: '시청자 카운터가 50만을 돌파한다. 히로인의 아헤가오가 전국에 송출되는 순간, 자궁에 정액이 범람했다.', type: 'narration' as const },
+      { speaker: '히로인', text: '이히히… ♡ 임신… 확정이에요… 전국 여러분 앞에서… 트레이너님의 아기… 받았어요… ♡♡♡♡♡', type: 'dialogue' as const },
+      { text: '슈퍼챗 총액이 역대 신기록을 경신한다. 정액범벅 히로인의 행복한 아헤가오가 트렌드 1위에 올랐다.', type: 'narration' as const },
+      { text: '【 A+랭크 — 전국 공개 종부쇼 달성 】', type: 'narration' as const },
+    ],
+  },
+
   // ── A Rank ──────────────────────────────────────────────
   {
     rank: 'A',
@@ -44,6 +97,25 @@ export const endings: Ending[] = [
       { text: '울면서 웃는 얼굴로 녀석이 다리를 벌렸다. 임신한 몸에 다시 삽입하자 자궁이 반갑다는 듯 쪼물딱 조여왔다.', type: 'action' },
       { speaker: '히로인', text: '아앗♡ 배 안에 아기 있는데... 또 자궁에 싸주는 거예요...? 행복해... ♡♡♡', type: 'dialogue' },
       { text: '녀석은 내 아이를 밴 채로 또 절정했다. 충실한 정액 변기 — 내가 만든 최고의 작품.', type: 'narration' },
+    ],
+  },
+
+  // ── B+ Rank (팬 수 특화) ──────────────────────────────────
+  {
+    rank: 'B+' as const,
+    title: '심야 방송의 여왕 — 전국 팬 봉사 생방송',
+    condition: (stats, _cond, _usedInheritance, fanCount) =>
+      (fanCount ?? 0) >= 10000 &&
+      (stats.libido >= 400 || stats.technique >= 400 || stats.capacity >= 400 || stats.endurance >= 400 || stats.charm >= 400),
+    script: [
+      { text: '심야 시간대, 성인 전용 채널에 히로인의 이름이 올라간다.', type: 'narration' as const },
+      { text: '매주 금요일 자정, 「히로인의 봉사 라이브」. 전국 팬 1만 명이 실시간으로 지켜보는 프로그램.', type: 'narration' as const },
+      { speaker: '히로인', text: '여러분 안녕하세요~♡ 오늘도 심야 방송 시간이에요. 오늘은… 특별히 트레이너님과 함께♡', type: 'dialogue' as const },
+      { speaker: '트레이너', text: '팬들이 기다리고 있어. 최고의 쇼를 보여줘.', type: 'dialogue' as const },
+      { text: '카메라가 히로인의 전신을 비춘다. 채팅창에 하트 이모지가 폭포처럼 흘러내린다.', type: 'narration' as const },
+      { speaker: '히로인', text: '아앗♡ 전국에서 보고 있는데… 이렇게 느끼는 모습… 부끄러워… 하지만 멈출 수 없어… ♡♡', type: 'dialogue' as const },
+      { text: '시청률 1위. 심야 방송의 전설로 이름을 남긴 히로인은, 트레이너의 품에서 행복하게 웃었다.', type: 'narration' as const },
+      { text: '【 B+랭크 — 심야 방송의 여왕 달성 】', type: 'narration' as const },
     ],
   },
 
